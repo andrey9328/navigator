@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tvExample"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        tools:text="App fragment">
+    </TextView>
+
+    <Button
+        android:id="@+id/btnOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Open new"
+        android:layout_marginTop="64dp"
+        tools:ignore="HardcodedText">
+    </Button>
+
+    <Button
+        android:id="@+id/btnBackParent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Back parent"
+        android:layout_marginTop="128dp"
+        tools:ignore="HardcodedText">
+    </Button>
+
+    <Button
+        android:id="@+id/closeActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="Close activity"
+        android:layout_marginTop="188dp"
+        tools:ignore="HardcodedText">
+    </Button>
+
+</FrameLayout>
