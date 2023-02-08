@@ -79,13 +79,13 @@ class MultiScreenNavigator(
             val container = ScreenContainer()
             container.arguments = bundleOf(ScreenContainer.ROUTER_TAG to screenKey)
             transaction.add(containerId, container, screenKey)
-            getRouter(screenKey).addAction(NavOpenScreen(screen, isAddedToBackStack = false, args = args))
+            getRouter(screenKey).addAction(NavReplaceScreen(screen, args = args))
             actionSelectTab.invoke(screenKey)
             currentTab = screenKey
-        } else if (args != null) {
+          } else if (args != null) {
             transaction.show(newFragment)
             getRouter(screenKey).addAction(NavBackToRootScreen)
-            getRouter(screenKey).addAction(NavReplaceScreen(screen, isAddedToBackStack = false, args = args))
+            getRouter(screenKey).addAction(NavReplaceScreen(screen, args = args))
             actionSelectTab.invoke(screenKey)
             currentTab = screenKey
         } else {

@@ -18,17 +18,17 @@ class Navigator(
     override fun executeAction(action: INavActions, routerTag: String?) {
         fragmentManager.executePendingTransactions()
         when(action) {
-            is NavOpenScreen -> openNewScreen(action.screen, action.isAddedToBackStack, routerTag, false, action.args)
+            is NavOpenScreen -> openNewScreen(action.screen, true, routerTag, false, action.args)
             is NavBack -> { backAction(action) }
             is NavBackToRootScreen -> { fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE) }
-            is NavReplaceScreen -> { openNewScreen(action.screen, action.isAddedToBackStack, routerTag, true, action.args) }
+            is NavReplaceScreen -> { openNewScreen(action.screen, false, routerTag, true, action.args) }
             is NavReplaceScreenById -> {
                 val screen = RouteNavigationContainer.associatesMap[action.associateId] ?: throw Exception("Incorrect associate id")
-                openNewScreen(screen, action.isAddedToBackStack, routerTag, true, action.args)
+                openNewScreen(screen, false, routerTag, true, action.args)
             }
             is NavOpenScreenById -> {
                 val screen = RouteNavigationContainer.associatesMap[action.associateId] ?: throw Exception("Incorrect associate id")
-                openNewScreen(screen, action.isAddedToBackStack, routerTag, true, action.args)
+                openNewScreen(screen, true, routerTag, true, action.args)
             }
             is NavBackTo -> { fragmentManager.popBackStack(action.fragmentTag, 0) }
         }

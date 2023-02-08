@@ -8,6 +8,7 @@ import org.navigator.fragments.AppsMenuFragment
 import org.navigator.navigator.models.NavigationScreen
 import org.navigator.navigator.actions.NavBack
 import org.navigator.navigator.actions.NavOpenScreen
+import org.navigator.navigator.actions.NavReplaceScreen
 import org.navigator.navigator.createNavigator
 import org.navigator.navigator.getRouter
 
@@ -19,9 +20,8 @@ class SimpleActivity: AppCompatActivity() {
         setContentView(R.layout.simple_activity)
         if (savedInstanceState == null) {
             getRouter(ROUTER_NAME).addAction(
-                NavOpenScreen(
+                NavReplaceScreen(
                     NavigationScreen { AppsMenuFragment() },
-                    isAddedToBackStack = false,
                     args = bundleOf("close" to true)
                 )
             )

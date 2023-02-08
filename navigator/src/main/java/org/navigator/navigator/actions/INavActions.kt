@@ -15,39 +15,33 @@ data class NavSelectTab(val tabId: String, val args: Bundle? = null): INavAction
 
 /**
  * Open new screen in chain
- *
- * @param screen screen fragment for open
- * @param isAddedToBackStack add to stack for back action
- * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
+ * @param args bundle for new fragment
  */
-data class NavOpenScreen(val screen: NavigationScreen, val isAddedToBackStack: Boolean = true, val args: Bundle? = null): INavActions
+data class NavOpenScreen(val screen: NavigationScreen, val args: Bundle? = null): INavActions
 
 /**
  * Replace screen in chain
  *
  * @param screen screen fragment for open
- * @param isAddedToBackStack add to stack for back action
- * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
+ * @param args bundle for new fragment
  */
-data class NavReplaceScreen(val screen: NavigationScreen, val isAddedToBackStack: Boolean = true, val args: Bundle? = null): INavActions
+data class NavReplaceScreen(val screen: NavigationScreen, val args: Bundle? = null): INavActions
 
 /**
  * Open new screen in chain
  *
  * @param associateId find fragment in associates array by key, exception if key not found
- * @param isAddedToBackStack add to stack for back action
- * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
+ * @param args bundle for new fragment
  */
-data class NavOpenScreenById(val associateId: String, val isAddedToBackStack: Boolean = true, val args: Bundle? = null): INavActions
+data class NavOpenScreenById(val associateId: String, val args: Bundle? = null): INavActions
 
 /**
  * Replace screen in chain
  *
  * @param associateId find fragment in associates array by key, exception if key not found
- * @param isAddedToBackStack add to stack for back action
- * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
+ * @param args bundle for new fragment
  */
-data class NavReplaceScreenById(val associateId: String, val isAddedToBackStack: Boolean = true, val args: Bundle? = null): INavActions
+data class NavReplaceScreenById(val associateId: String, val args: Bundle? = null): INavActions
 
 /**
  * Clear current backstack

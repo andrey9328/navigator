@@ -37,6 +37,10 @@ class AppsMenuFragment: Fragment() {
         }
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
+            if (parentFragmentManager.backStackEntryCount > 3) {
+                getRouter().addAction(NavOpenScreen(NavigationScreen { AppsMenuFragment() }))
+                return@setOnClickListener
+            }
             getRouter().addAction(NavOpenScreen(NavigationScreen { AppsMenuFragment() }))
         }
 
