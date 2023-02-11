@@ -27,7 +27,7 @@ class ScreenContainer: Fragment() {
 
     override fun onPause() {
         super.onPause()
-        getRouter().detachNavigator(false)
+        getRouter().detachNavigator(isRemoving)
     }
 
     companion object {

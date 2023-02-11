@@ -8,14 +8,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import org.navigator.app.R
+import org.navigator.navigator.actions.*
 import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.actions.NavBackToRootScreen
-import org.navigator.navigator.actions.NavOpenScreen
-import org.navigator.navigator.actions.NavClearChainTabLater
-import org.navigator.navigator.actions.NavCreateSubNavigator
 import org.navigator.navigator.getRouter
 
-class AppsMenuFragment: Fragment() {
+class SubFragment: Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,21 +26,18 @@ class AppsMenuFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<TextView>(R.id.tvExample)?.let {
             if (savedInstanceState?.getString("Text") == null) {
-                it.text = "AppsMenuFragment " + parentFragmentManager.backStackEntryCount.toString()
+                it.text = "SubFragment " + parentFragmentManager.backStackEntryCount.toString()
             } else {
                 it.text = savedInstanceState.getString("Text")
             }
         }
         view.findViewById<Button>(R.id.btnBackParent).setOnClickListener {
-            getRouter().addAction(NavBackToRootScreen)
+            getRouter(null).addAction(NavClearSubNavigator("Sub"))
+            getRouter(null).addAction(NavSelectTab(R.id.appsMenu.toString()))
         }
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
-            if (parentFragmentManager.backStackEntryCount > 3) {
-                getRouter(null).addAction(NavCreateSubNavigator( R.id.profileMenu.toString(), "Sub", NavigationScreen { SubFragment() }))
-                return@setOnClickListener
-            }
-            getRouter().addAction(NavOpenScreen(NavigationScreen { AppsMenuFragment() }))
+            getRouter().addAction(NavOpenScreen(NavigationScreen { SubFragment() }))
         }
 
         view.findViewById<Button>(R.id.closeActivity).visibility =
