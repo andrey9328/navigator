@@ -12,6 +12,10 @@ object RouteNavigationContainer {
         return routes.getOrPut(tag) { NavigationRoute(tag) }
     }
 
+    fun isContainsRoute(key: String): Boolean {
+        return routes.containsKey(key)
+    }
+
     fun addAssociates(data: HashMap<String, NavigationScreen>) {
         associatesMap.putAll(data)
     }

@@ -1,7 +1,7 @@
 package org.navigator.navigator.navigators
 import org.navigator.navigator.actions.INavActions
 
-interface INavigatorForRoute: INavigator {
+interface INavigatorInternal: INavigator {
     /**
      * Add navigation action to stack
      * @param action start action

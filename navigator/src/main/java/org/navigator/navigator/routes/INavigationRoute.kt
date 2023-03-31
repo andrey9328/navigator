@@ -2,7 +2,7 @@ package org.navigator.navigator.routes
 
 import org.navigator.navigator.actions.INavActions
 import org.navigator.navigator.navigators.INavigator
-import org.navigator.navigator.navigators.INavigatorForRoute
+import org.navigator.navigator.navigators.INavigatorInternal
 
 interface INavigationRoute {
     /**
@@ -27,5 +27,5 @@ interface INavigationRoute {
     /**
      * Return current attach navigator
      */
-    fun getCurrentNavigator(): INavigatorForRoute?
+    fun getCurrentNavigator(): INavigatorInternal?
 }

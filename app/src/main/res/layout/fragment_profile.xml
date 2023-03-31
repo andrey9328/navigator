@@ -13,7 +13,7 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@android:color/black"
-        tools:text="App fragment">
+        tools:text="Profile fragment">
     </TextView>
 
 </FrameLayout>

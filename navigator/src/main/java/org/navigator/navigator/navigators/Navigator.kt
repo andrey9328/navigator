@@ -5,6 +5,7 @@ import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import org.navigator.NavigationException
 import org.navigator.navigator.models.NavigationScreen
 import org.navigator.navigator.RouteNavigationContainer
 import org.navigator.navigator.fragments.ScreenContainer
@@ -13,7 +14,7 @@ import org.navigator.navigator.actions.*
 class Navigator(
     @IdRes val containerId: Int,
     private val fragmentManager: FragmentManager
-): INavigatorForRoute {
+): INavigatorInternal {
 
     override fun executeAction(action: INavActions, routerTag: String?) {
         fragmentManager.executePendingTransactions()
@@ -23,11 +24,11 @@ class Navigator(
             is NavBackToRootScreen -> { fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE) }
             is NavReplaceScreen -> { openNewScreen(action.screen, false, routerTag, true, action.args) }
             is NavReplaceScreenById -> {
-                val screen = RouteNavigationContainer.associatesMap[action.associateId] ?: throw Exception("Incorrect associate id")
+                val screen = RouteNavigationContainer.associatesMap[action.associateId] ?: throw NavigationException("Incorrect associate id")
                 openNewScreen(screen, false, routerTag, true, action.args)
             }
             is NavOpenScreenById -> {
-                val screen = RouteNavigationContainer.associatesMap[action.associateId] ?: throw Exception("Incorrect associate id")
+                val screen = RouteNavigationContainer.associatesMap[action.associateId] ?: throw NavigationException("Incorrect associate id")
                 openNewScreen(screen, true, routerTag, true, action.args)
             }
             is NavBackTo -> { fragmentManager.popBackStack(action.fragmentTag, 0) }

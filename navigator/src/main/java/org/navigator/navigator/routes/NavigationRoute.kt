@@ -1,17 +1,20 @@
 package org.navigator.navigator.routes
 
+import org.navigator.NavigationException
 import org.navigator.navigator.RouteNavigationContainer
+import org.navigator.navigator.actions.IMultiNavActions
 import org.navigator.navigator.actions.INavActions
 import org.navigator.navigator.navigators.INavigator
-import org.navigator.navigator.navigators.INavigatorForRoute
+import org.navigator.navigator.navigators.INavigatorInternal
+import org.navigator.navigator.navigators.MultiScreenNavigator
 
 class NavigationRoute(private val tag: String?): INavigationRoute {
-    private var currentNavigator: INavigatorForRoute? = null
+    private var currentNavigator: INavigatorInternal? = null
     private val actions = arrayListOf<INavActions>()
     private val savedMap = hashMapOf<String, Any?>()
 
     override fun attachNavigator(navigator: INavigator) {
-        val castNavigator = navigator as? INavigatorForRoute ?: throw Exception("Base class for navigator must be INavigatorForRoute")
+        val castNavigator = navigator as? INavigatorInternal ?: throw NavigationException("Base class for navigator must be INavigatorForRoute")
         currentNavigator = castNavigator
         currentNavigator?.restoreState(savedMap)
         pendingActions()
@@ -26,11 +29,19 @@ class NavigationRoute(private val tag: String?): INavigationRoute {
     }
 
     override fun addAction(action: INavActions) {
+        if (currentNavigator != null
+            && currentNavigator !is MultiScreenNavigator && action is IMultiNavActions
+        ) {
+            throw NavigationException(
+                "Use multi navigation action for default navigator. " +
+                        "More likely incorrect navigator tag for getRouter method"
+            )
+        }
         actions.add(action)
         pendingActions()
     }
 
-    override fun getCurrentNavigator(): INavigatorForRoute? {
+    override fun getCurrentNavigator(): INavigatorInternal? {
         return currentNavigator
     }
 

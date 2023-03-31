@@ -5,6 +5,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import org.navigator.fragments.AppsMenuFragment
+import org.navigator.fragments.HistoryFragment
 import org.navigator.navigator.models.NavigationScreen
 import org.navigator.navigator.actions.NavBack
 import org.navigator.navigator.actions.NavOpenScreen
@@ -21,7 +22,7 @@ class SimpleActivity: AppCompatActivity() {
         if (savedInstanceState == null) {
             getRouter(ROUTER_NAME).addAction(
                 NavReplaceScreen(
-                    NavigationScreen { AppsMenuFragment() },
+                    NavigationScreen { HistoryFragment() },
                     args = bundleOf("close" to true)
                 )
             )

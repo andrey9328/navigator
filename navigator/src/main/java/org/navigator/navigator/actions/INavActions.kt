@@ -5,6 +5,8 @@ import org.navigator.navigator.models.NavigationScreen
 
 interface INavActions
 
+interface IMultiNavActions: INavActions
+
 /**
  * Open sub screen
  *
@@ -12,7 +14,39 @@ interface INavActions
  * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
  * @param isRecreateAll true clear all chain and recreate root fragment, default false
  */
-data class NavSelectTab(val tabId: String, val isRecreateAll: Boolean = false, val args: Bundle? = null): INavActions
+data class NavSelectTab(val tabId: String, val isRecreateAll: Boolean = false, val args: Bundle? = null): IMultiNavActions
+
+/**
+ * Recreates fragments after a tab is selected if you need to recreate not immediately, but after opening the tab
+ *
+ * @param tabIds id scope screen need restatrt later
+ */
+data class NavClearChainTabsLater(val tabIds: List<String>): IMultiNavActions
+
+
+/**
+ * Create new sub navigation in input tab. This navigator will exist until the backstack all of the new navigator is cleared
+ *
+ * @param tabId id of bottom bar item
+ * @param newNavigatorId key for new navigator
+ * @param screen parent screen for new navigator
+ * @param args bundle for new fragment
+ * @param isStayCurrentTab not process back action after close sub navigator stay in current fragment
+ */
+data class NavCreateSubNavigator(
+    val tabId: String,
+    val newNavigatorId: String,
+    val screen: NavigationScreen,
+    val args: Bundle? = null,
+    val isStayCurrentTab: Boolean = false
+) : IMultiNavActions
+
+/**
+ * Remove sub navigation if create by NavCreateSubNavigator clear fragment container and it router
+ *
+ * @param navigatorId id navigator for delete
+ */
+data class NavClearSubNavigator(val navigatorId: String) : IMultiNavActions
 
 /**
  * Open new screen in chain
@@ -62,34 +96,3 @@ data class NavBack(val systemAction: (() -> Unit)? = null): INavActions
  * @param fragmentTag name fragment to back (Example: use fragment class Fragment::class.simpleName)
  */
 data class NavBackTo(val fragmentTag: String?): INavActions
-
-
-/**
- * Recreates fragments after a tab is selected if you need to recreate not immediately, but after opening the tab
- *
- * @param ids id scope screen need restatrt later
- */
-data class NavClearChainTabLater(val ids: List<String>): INavActions
-
-
-/**
- * Create new sub navigation in input tab. This navigator will exist until the backstack all of the new navigator is cleared
- *
- * @param tabId id of bottom bar item
- * @param newNavigatorId key for new navigator шы гтшй
- * @param screen parent screen for new navigator
- * @param args bundle for new fragment
- */
-data class NavCreateSubNavigator(
-    val tabId: String,
-    val newNavigatorId: String,
-    val screen: NavigationScreen,
-    val args: Bundle? = null
-) : INavActions
-
-/**
- * Remove sub navigation if create by NavCreateSubNavigator clear fragment container and it router
- *
- * @param navigatorId id navigator for delete
- */
-data class NavClearSubNavigator(val navigatorId: String) : INavActions
