@@ -5,6 +5,7 @@ import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import org.navigator.NavigationException
 import org.navigator.main.models.NavigationScreen
 import org.navigator.main.RouteNavigationContainer
 import org.navigator.main.fragments.ScreenContainer
@@ -45,6 +46,15 @@ class MultiScreenNavigator(
                 action.tabId,
                 action.newNavigatorId,
                 action.screen,
+                false,
+                action.args,
+                action.isStayCurrentTab
+            )
+            is NavCreateSubNavigatorById -> selectScreen(
+                action.tabId,
+                action.newNavigatorId,
+                RouteNavigationContainer.associatesMap[action.associateId]
+                    ?: throw NavigationException("Incorrect associate id"),
                 false,
                 action.args,
                 action.isStayCurrentTab

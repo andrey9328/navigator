@@ -42,6 +42,23 @@ data class NavCreateSubNavigator(
 ) : IMultiNavActions
 
 /**
+ * Create new sub navigation in input tab. This navigator will exist until the backstack all of the new navigator is cleared
+ *
+ * @param tabId id of bottom bar item
+ * @param newNavigatorId key for new navigator
+ * @param associateId find fragment in associates array by key, exception if key not found
+ * @param args bundle for new fragment
+ * @param isStayCurrentTab not process back action after close sub navigator stay in current fragment
+ */
+data class NavCreateSubNavigatorById(
+    val tabId: String,
+    val newNavigatorId: String,
+    val associateId: String,
+    val args: Bundle? = null,
+    val isStayCurrentTab: Boolean = false
+) : IMultiNavActions
+
+/**
  * Remove sub navigation if create by NavCreateSubNavigator clear fragment container and it router
  *
  * @param navigatorId id navigator for delete
