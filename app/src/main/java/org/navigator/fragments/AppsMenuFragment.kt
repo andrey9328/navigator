@@ -24,7 +24,7 @@ class AppsMenuFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.btnOpen)?.setOnClickListener {
-            getRouter().addAction(NavCreateSubNavigator(
+            getRouter(null).addAction(NavCreateSubNavigator(
                 R.id.historyMenu.toString(),
                 "1",
                 NavigationScreen { LoginFragment() },
