@@ -5,7 +5,7 @@ Library ready for multi module arhiticture. MVP/MVVM/MVI and also their variatio
 <table>
     <tr>
         <td>
-            <img src="https://github.com/andrey9328/navigator/blob/master/Demonstartion.gif" width="256"/>
+            <img src="https://github.com/andrey9328/navigator/blob/master/media/Demonstartion.gif" width="256"/>
         </td>
     </tr>
 </table>
