@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
-import org.navigator.fragments.AppsMenuFragment
 import org.navigator.fragments.HistoryFragment
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.actions.NavBack
-import org.navigator.navigator.actions.NavOpenScreen
-import org.navigator.navigator.actions.NavReplaceScreen
-import org.navigator.navigator.createNavigator
-import org.navigator.navigator.getRouter
+import org.navigator.main.models.NavigationScreen
+import org.navigator.main.actions.NavBack
+import org.navigator.main.actions.NavReplaceScreen
+import org.navigator.main.createNavigator
+import org.navigator.main.getRouter
 
 class SimpleActivity: AppCompatActivity() {
     private val navigator = createNavigator(R.id.mainContainer, supportFragmentManager)

@@ -1,8 +1,8 @@
-package org.navigator.navigator.routes
+package org.navigator.main.routes
 
-import org.navigator.navigator.actions.INavActions
-import org.navigator.navigator.navigators.INavigator
-import org.navigator.navigator.navigators.INavigatorInternal
+import org.navigator.main.actions.INavActions
+import org.navigator.main.navigators.INavigator
+import org.navigator.main.navigators.INavigatorInternal
 
 interface INavigationRoute {
     /**

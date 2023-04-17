@@ -1,7 +1,7 @@
-package org.navigator.navigator.actions
+package org.navigator.main.actions
 
 import android.os.Bundle
-import org.navigator.navigator.models.NavigationScreen
+import org.navigator.main.models.NavigationScreen
 
 interface INavActions
 
@@ -19,7 +19,7 @@ data class NavSelectTab(val tabId: String, val isRecreateAll: Boolean = false, v
 /**
  * Recreates fragments after a tab is selected if you need to recreate not immediately, but after opening the tab
  *
- * @param tabIds id scope screen need restatrt later
+ * @param tabIds id scope screen need restart later
  */
 data class NavClearChainTabsLater(val tabIds: List<String>): IMultiNavActions
 

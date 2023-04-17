@@ -1,12 +1,12 @@
-package org.navigator.navigator.routes
+package org.navigator.main.routes
 
 import org.navigator.NavigationException
-import org.navigator.navigator.RouteNavigationContainer
-import org.navigator.navigator.actions.IMultiNavActions
-import org.navigator.navigator.actions.INavActions
-import org.navigator.navigator.navigators.INavigator
-import org.navigator.navigator.navigators.INavigatorInternal
-import org.navigator.navigator.navigators.MultiScreenNavigator
+import org.navigator.main.RouteNavigationContainer
+import org.navigator.main.actions.IMultiNavActions
+import org.navigator.main.actions.INavActions
+import org.navigator.main.navigators.INavigator
+import org.navigator.main.navigators.INavigatorInternal
+import org.navigator.main.navigators.MultiScreenNavigator
 
 class NavigationRoute(private val tag: String?): INavigationRoute {
     private var currentNavigator: INavigatorInternal? = null

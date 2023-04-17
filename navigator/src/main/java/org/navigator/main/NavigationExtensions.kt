@@ -1,14 +1,14 @@
-package org.navigator.navigator
+package org.navigator.main
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import org.navigator.navigator.fragments.ScreenContainer
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.navigators.INavigator
-import org.navigator.navigator.navigators.MultiScreenNavigator
-import org.navigator.navigator.navigators.Navigator
-import org.navigator.navigator.routes.INavigationRoute
+import org.navigator.main.fragments.ScreenContainer
+import org.navigator.main.models.NavigationScreen
+import org.navigator.main.navigators.INavigator
+import org.navigator.main.navigators.MultiScreenNavigator
+import org.navigator.main.navigators.Navigator
+import org.navigator.main.routes.INavigationRoute
 
 fun Fragment.getRouter(): INavigationRoute {
     return RouteNavigationContainer.getRouteByTag(

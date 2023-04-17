@@ -1,4 +1,4 @@
-package org.navigator.navigator
+package org.navigator.main
 
 import org.junit.Test
 

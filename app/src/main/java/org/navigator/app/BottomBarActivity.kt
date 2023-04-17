@@ -7,11 +7,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.navigator.fragments.AppsMenuFragment
 import org.navigator.fragments.HistoryFragment
 import org.navigator.fragments.ProfileFragment
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.actions.NavBack
-import org.navigator.navigator.actions.NavSelectTab
-import org.navigator.navigator.createMultiStackNavigator
-import org.navigator.navigator.getRouter
+import org.navigator.main.models.NavigationScreen
+import org.navigator.main.actions.NavBack
+import org.navigator.main.actions.NavSelectTab
+import org.navigator.main.createMultiStackNavigator
+import org.navigator.main.getRouter
 
 class BottomBarActivity: AppCompatActivity() {
     private val navigator = createMultiStackNavigator(R.id.mainContainer, supportFragmentManager,

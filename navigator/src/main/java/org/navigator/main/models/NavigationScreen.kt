@@ -1,4 +1,4 @@
-package org.navigator.navigator.models
+package org.navigator.main.models
 
 import androidx.fragment.app.Fragment
 

@@ -1,4 +1,4 @@
-package org.navigator.navigator.navigators
+package org.navigator.main.navigators
 
 import android.os.Bundle
 import androidx.annotation.IdRes
@@ -6,10 +6,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import org.navigator.NavigationException
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.RouteNavigationContainer
-import org.navigator.navigator.fragments.ScreenContainer
-import org.navigator.navigator.actions.*
+import org.navigator.main.models.NavigationScreen
+import org.navigator.main.RouteNavigationContainer
+import org.navigator.main.fragments.ScreenContainer
+import org.navigator.main.actions.*
 
 class Navigator(
     @IdRes val containerId: Int,

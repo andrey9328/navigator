@@ -1,13 +1,13 @@
-package org.navigator.navigator.fragments
+package org.navigator.main.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.navigator.main.createNavigator
+import org.navigator.main.getRouter
 import org.navigator.navigator.R
-import org.navigator.navigator.createNavigator
-import org.navigator.navigator.getRouter
 
 class ScreenContainer: Fragment() {
     private val navigator by lazy { createNavigator(R.id.containerNavigator, childFragmentManager) }

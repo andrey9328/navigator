@@ -1,0 +1,3 @@
+package org.navigator.main.navigators
+
+interface INavigatorMultiInternal: INavigatorInternal

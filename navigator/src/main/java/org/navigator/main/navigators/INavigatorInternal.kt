@@ -1,5 +1,5 @@
-package org.navigator.navigator.navigators
-import org.navigator.navigator.actions.INavActions
+package org.navigator.main.navigators
+import org.navigator.main.actions.INavActions
 
 interface INavigatorInternal: INavigator {
     /**

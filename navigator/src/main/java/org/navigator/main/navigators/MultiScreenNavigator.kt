@@ -1,16 +1,16 @@
-package org.navigator.navigator.navigators
+package org.navigator.main.navigators
 
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.RouteNavigationContainer
-import org.navigator.navigator.fragments.ScreenContainer
-import org.navigator.navigator.actions.*
-import org.navigator.navigator.containers.SubNavigatorContainer
-import org.navigator.navigator.routes.INavigationRoute
+import org.navigator.main.models.NavigationScreen
+import org.navigator.main.RouteNavigationContainer
+import org.navigator.main.fragments.ScreenContainer
+import org.navigator.main.actions.*
+import org.navigator.main.containers.SubNavigatorContainer
+import org.navigator.main.routes.INavigationRoute
 
 class MultiScreenNavigator(
     @IdRes val containerId: Int,
@@ -22,7 +22,7 @@ class MultiScreenNavigator(
         tab?.let { result.add(it) }
         result
     }
-) : IMultiNavigatorInternal {
+) : INavigatorMultiInternal {
     private val backStack = arrayListOf<String>()
     private var currentTab: String? = null
     private val screensForClear = arrayListOf<String>()
@@ -99,7 +99,7 @@ class MultiScreenNavigator(
     }
 
     private fun selectScreen(tabId: String, subNavigatorId: String?, screen: NavigationScreen, isClearStack: Boolean, args: Bundle?, isStayCurrentTab: Boolean) {
-        val subScreenKey = if (subNavigatorId != null) {
+        val subScreenKey = if (subNavigatorId != null && subNavigators.any { it.subNavId == subNavigatorId }.not()) {
             subNavigators.add(SubNavigatorContainer(tabId, subNavigatorId, isStayCurrentTab))
             subNavigatorId
         } else {

@@ -1,8 +1,8 @@
-package org.navigator.navigator
+package org.navigator.main
 
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.routes.INavigationRoute
-import org.navigator.navigator.routes.NavigationRoute
+import org.navigator.main.models.NavigationScreen
+import org.navigator.main.routes.INavigationRoute
+import org.navigator.main.routes.NavigationRoute
 
 object RouteNavigationContainer {
     private val routes = HashMap<String?, INavigationRoute>()

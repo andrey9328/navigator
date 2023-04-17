@@ -5,12 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import org.navigator.app.R
-import org.navigator.navigator.actions.*
-import org.navigator.navigator.models.NavigationScreen
-import org.navigator.navigator.getRouter
+import org.navigator.main.actions.*
+import org.navigator.main.getRouter
 
 class LoginFragment: Fragment() {
 

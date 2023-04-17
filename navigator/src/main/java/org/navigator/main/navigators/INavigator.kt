@@ -1,4 +1,4 @@
-package org.navigator.navigator.navigators
+package org.navigator.main.navigators
 import androidx.fragment.app.Fragment
 
 interface INavigator {
