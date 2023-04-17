@@ -53,7 +53,7 @@ class MultiScreenNavigator(
             is NavCreateSubNavigatorById -> selectScreen(
                 action.tabId,
                 action.newNavigatorId,
-                RouteNavigationContainer.associatesMap[action.associateId]
+                RouteNavigationContainer.getScreen(action.associateId)
                     ?: throw NavigationException("Incorrect associate id"),
                 false,
                 action.args,

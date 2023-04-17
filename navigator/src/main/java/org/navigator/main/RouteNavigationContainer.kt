@@ -6,7 +6,7 @@ import org.navigator.main.routes.NavigationRoute
 
 object RouteNavigationContainer {
     private val routes = HashMap<String?, INavigationRoute>()
-    val associatesMap = hashMapOf<String, NavigationScreen>()
+    private val associatesMap = hashMapOf<String, NavigationScreen>()
 
     fun getRouteByTag(tag: String?): INavigationRoute {
         return routes.getOrPut(tag) { NavigationRoute(tag) }
@@ -18,6 +18,10 @@ object RouteNavigationContainer {
 
     fun addAssociates(data: HashMap<String, NavigationScreen>) {
         associatesMap.putAll(data)
+    }
+
+    fun getScreen(key: String): NavigationScreen? {
+        return associatesMap[key]
     }
 
     fun removeRouter(key: String?) {
