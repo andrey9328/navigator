@@ -27,23 +27,24 @@
     </Button>
 
     <Button
-        android:id="@+id/btnOpenProfile"
+        android:id="@+id/btnBackParent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Open History screen"
+        android:text="Back parent"
         android:layout_marginTop="128dp"
         tools:ignore="HardcodedText">
     </Button>
 
-    <EditText
-        android:id="@+id/etArguments"
-        android:layout_marginHorizontal="48dp"
-        android:layout_marginTop="128dp"
-        android:hint="Argument to history"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/closeActivity"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:text="Close activity"
+        android:layout_marginTop="188dp"
         tools:ignore="HardcodedText">
-    </EditText>
+    </Button>
 
 </FrameLayout>

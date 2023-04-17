@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white">
 
@@ -15,7 +13,37 @@
         android:textStyle="bold"
         android:textSize="16sp"
         android:textColor="@android:color/black"
-        android:text="History fragment">
+        tools:text="App fragment">
     </TextView>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/btnOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Open new"
+        android:layout_marginTop="64dp"
+        tools:ignore="HardcodedText">
+    </Button>
+
+    <Button
+        android:id="@+id/btnOpenProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Open Profile"
+        android:layout_marginTop="128dp"
+        tools:ignore="HardcodedText">
+    </Button>
+
+    <EditText
+        android:id="@+id/etArguments"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginTop="128dp"
+        android:hint="Argument to profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText">
+    </EditText>
+
+</FrameLayout>
