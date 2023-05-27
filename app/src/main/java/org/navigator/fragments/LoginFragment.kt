@@ -23,7 +23,7 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.btnLogin).setOnClickListener {
-            getRouter(null).addAction(NavClearSubNavigator("1"))
+
         }
     }
 }

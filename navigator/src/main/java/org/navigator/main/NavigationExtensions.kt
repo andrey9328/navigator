@@ -29,11 +29,12 @@ fun createMultiStackNavigator(
     fragmentManager: FragmentManager,
     actionSelectTab: (String) -> Unit,
     createScreen: (String) -> NavigationScreen,
-    backStackBuilder: (List<String>, String?) -> List<String> = { list, tab ->
+    backStackBuilder: (List<String>, String?, String?) -> List<String> = { list, current, new ->
         val result = ArrayList<String>(list)
-        tab?.let { result.add(it) }
+        current?.let { result.add(it) }
         result
     }
 ): INavigator {
     return MultiScreenNavigator(containerId, fragmentManager, actionSelectTab, createScreen, backStackBuilder)
 }
+

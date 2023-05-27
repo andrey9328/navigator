@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import org.navigator.app.R
 import org.navigator.main.actions.NavBackToRootScreen
-import org.navigator.main.actions.NavCreateSubNavigator
+import org.navigator.main.actions.NavCreateSubRouter
 import org.navigator.main.actions.NavOpenScreen
 import org.navigator.main.getRouter
 import org.navigator.main.models.NavigationScreen
@@ -39,13 +39,10 @@ class AppsMenuFragment: Fragment() {
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
             getRouter().addAction(NavOpenScreen(NavigationScreen { AppsMenuFragment() }))
+        }
 
-            view.findViewById<Button>(R.id.closeActivity).visibility =
-                if(arguments?.containsKey("close") == true) View.VISIBLE else View.GONE
-
-            view.findViewById<Button>(R.id.closeActivity)?.setOnClickListener {
-                requireActivity().finish()
-            }
+        view.findViewById<Button>(R.id.openNewScreenTab).setOnClickListener {
+            getRouter(null).addAction(NavCreateSubRouter(R.id.profileMenu.toString(), "profile_new", NavigationScreen { HistoryFragment() }))
         }
     }
 

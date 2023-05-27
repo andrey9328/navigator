@@ -37,12 +37,11 @@
     </Button>
 
     <Button
-        android:id="@+id/closeActivity"
+        android:id="@+id/openNewScreenTab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        android:text="Close activity"
+        android:text="openNewScreenTab"
         android:layout_marginTop="188dp"
         tools:ignore="HardcodedText">
     </Button>
