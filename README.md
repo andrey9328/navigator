@@ -11,7 +11,7 @@ Library ready for multi module arhiticture. MVP/MVVM/MVI and also their variatio
 </table>
 
 ## Main advantages
-+ Very lightweight (Aproximately ~700 lines)
++ Very lightweight (Aproximately ~400 lines)
 + Safe lifecycle navigation transactions and save states
 + Simple for use
 + Work with multi navigation with save state
