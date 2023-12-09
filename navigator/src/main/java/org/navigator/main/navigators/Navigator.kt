@@ -39,16 +39,16 @@ class Navigator(
         return fragmentManager.backStackEntryCount == 0
     }
 
-    override fun getSavedData(): HashMap<String, Any?> {
-        return hashMapOf()
-    }
-
-    override fun restoreState(saved: HashMap<String, Any?>) {
-
-    }
-
     override fun getShowFragment(): Fragment? {
         return fragmentManager.fragments.find { it.isVisible }
+    }
+
+    override fun saveBundleState(bundle: Bundle) {
+       
+    }
+
+    override fun restoreBundleState(bundle: Bundle) {
+
     }
 
     private fun backAction(action: NavBack) {

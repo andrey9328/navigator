@@ -9,6 +9,7 @@ import org.navigator.fragments.HistoryFragment
 import org.navigator.fragments.ProfileFragment
 import org.navigator.main.models.NavigationScreen
 import org.navigator.main.actions.NavBack
+import org.navigator.main.actions.NavRemoveSubRouter
 import org.navigator.main.actions.NavSelectTab
 import org.navigator.main.createMultiStackNavigator
 import org.navigator.main.getRouter
@@ -34,7 +35,6 @@ class BottomBarActivity: AppCompatActivity() {
             if (current == null || current == "profile_new") return@createMultiStackNavigator back
             val result = ArrayList(back)
             current.let { result.add(it) }
-            //if (new == "profile_new") { result.add(R.id.profileMenu.toString()) }
             result
         }
     )
@@ -47,7 +47,9 @@ class BottomBarActivity: AppCompatActivity() {
             when (it.itemId) {
                 R.id.appsMenu -> getRouter().addAction(NavSelectTab(it.itemId.toString()))
                 R.id.historyMenu -> getRouter().addAction(NavSelectTab(it.itemId.toString()))
-                R.id.profileMenu -> getRouter().addAction(NavSelectTab(it.itemId.toString()))
+                R.id.profileMenu -> {
+                    getRouter().addAction(NavSelectTab(it.itemId.toString()))
+                }
             }
             true
         }
@@ -70,5 +72,15 @@ class BottomBarActivity: AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         getRouter().detachNavigator(isFinishing)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        navigator.saveBundleState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        navigator.restoreBundleState(savedInstanceState)
     }
 }

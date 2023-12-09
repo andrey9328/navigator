@@ -2,7 +2,6 @@ package org.navigator.main.actions
 
 import android.os.Bundle
 import org.navigator.main.models.NavigationScreen
-import java.util.UUID
 
 interface INavActions
 
@@ -21,6 +20,8 @@ data class NavSelectTab(val tabId: String, val isRecreateAll: Boolean = false, v
  * Open sub screen
  *
  * @param tabId id scope screen
+ * @param subRouterId Id of screens scope
+ * @param screen start screen for sub router
  * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
  */
 data class NavCreateSubRouter(
@@ -28,6 +29,17 @@ data class NavCreateSubRouter(
     val subRouterId: String,
     val screen: NavigationScreen,
     val args: Bundle? = null
+) : IMultiNavActions
+
+/**
+ * Open sub screen
+ *
+ * @param tabId id scope screen to find sub router
+ * @param subRouterIds id scope screen
+ */
+data class NavRemoveSubRouter(
+    val tabId: String,
+    val subRouterIds: List<String>,
 ) : IMultiNavActions
 
 /**

@@ -1,5 +1,6 @@
 package org.navigator.main.navigators
 
+import android.os.Build
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
@@ -48,43 +49,16 @@ class MultiScreenNavigator(
                     action.args
                 )
             }
+            is NavRemoveSubRouter -> {
+                subRouters.removeLastItem {
+                    action.tabId == it.mainRouter && action.subRouterIds.contains(it.subRouter)
+                }
+            }
         }
     }
 
     override fun isRootFragment(): Boolean {
         return fragmentManager.backStackEntryCount == 0
-    }
-
-    override fun getSavedData(): HashMap<String, Any?> {
-        val saved = hashMapOf<String, Any?>()
-        saved[BACK_STACK_KEY] = backStack
-        saved[TAB_KEY] = currentRouter
-        saved[CLEAR_CHAINS] = screensForClear
-        saved[SUB_ROUTERS] = subRouters
-        return saved
-    }
-    @Suppress("UNCHECKED_CAST")
-    override fun restoreState(saved: HashMap<String, Any?>) {
-        val stack = saved[BACK_STACK_KEY] as? List<String>
-        stack?.let {
-            backStack.clear()
-            backStack.addAll(it)
-        }
-
-        val chains = saved[CLEAR_CHAINS] as? List<String>
-        chains?.let {
-            screensForClear.clear()
-            screensForClear.addAll(it)
-        }
-
-        val routers = saved[CLEAR_CHAINS] as? List<SubRoutersContainer>
-        routers?.let {
-            subRouters.clear()
-            subRouters.addAll(it)
-        }
-
-        val tab = saved[TAB_KEY] as? String
-        tab?.let { currentRouter = it }
     }
 
     override fun getShowFragment(): Fragment? {
@@ -93,6 +67,38 @@ class MultiScreenNavigator(
             ?.childFragmentManager
             ?.fragments
             ?.find { it.isVisible }
+    }
+
+    override fun saveBundleState(bundle: Bundle) {
+        bundle.putStringArrayList(BACK_STACK_KEY, backStack)
+        bundle.putString(TAB_KEY, currentRouter)
+        bundle.putStringArrayList(CLEAR_CHAINS, screensForClear)
+        bundle.putParcelableArrayList(SUB_ROUTERS, subRouters)
+    }
+
+    override fun restoreBundleState(bundle: Bundle) {
+        bundle.getStringArrayList(BACK_STACK_KEY)?.let {
+            backStack.clear()
+            backStack.addAll(it)
+        }
+
+        bundle.getStringArrayList(CLEAR_CHAINS)?.let {
+            screensForClear.clear()
+            screensForClear.addAll(it)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            bundle.getParcelableArrayList("SUB_ROUTERS", SubRoutersContainer::class.java)
+        } else {
+            bundle.getParcelableArrayList("SUB_ROUTERS")
+        }?.let {
+            subRouters.clear()
+            subRouters.addAll(it)
+        }
+
+        bundle.getString(TAB_KEY)?.let {
+            currentRouter = it
+        }
     }
 
     private fun selectTab(tabId: String, screen: NavigationScreen, isClearStack: Boolean, args: Bundle?) {

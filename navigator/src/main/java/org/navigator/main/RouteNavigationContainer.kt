@@ -1,6 +1,5 @@
 package org.navigator.main
 
-import org.navigator.main.actions.NavBackToRootScreen
 import org.navigator.main.models.NavigationScreen
 import org.navigator.main.routes.INavigationRoute
 import org.navigator.main.routes.NavigationRoute
