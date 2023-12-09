@@ -49,11 +49,7 @@ class MultiScreenNavigator(
                     action.args
                 )
             }
-            is NavRemoveSubRouter -> {
-                subRouters.removeLastItem {
-                    action.tabId == it.mainRouter && action.subRouterIds.contains(it.subRouter)
-                }
-            }
+            is NavRemoveSubRouter -> { removeSubRouterAction(action.tabId, action.subRouterId) }
         }
     }
 
@@ -98,6 +94,17 @@ class MultiScreenNavigator(
 
         bundle.getString(TAB_KEY)?.let {
             currentRouter = it
+        }
+    }
+
+    private fun removeSubRouterAction(tabId: String, subRouterId: String) {
+        for (i in 0..< subRouters.size) {
+            val currentRouter = subRouters[i]
+            if (currentRouter.mainRouter == tabId && currentRouter.subRouter == subRouterId) {
+                subRouters.removeAt(i)
+                removeRouter(currentRouter.subRouter, fragmentManager.findFragmentByTag(currentRouter.subRouter))
+                return
+            }
         }
     }
 
@@ -158,10 +165,7 @@ class MultiScreenNavigator(
         val currentFragment = fragmentManager.fragments.find { it.isVisible }
 
         if (isRemoveRouter) {
-            fragmentManager.fragments.find { it.isVisible }?.let {
-                fragmentManager.beginTransaction().remove(it).commit()
-            }
-            RouteNavigationContainer.removeRouter(currentRouter)
+            removeRouter(currentRouter, fragmentManager.fragments.find { it.isVisible })
         }
 
         val newFragment = fragmentManager.findFragmentByTag(screenKey)
@@ -178,6 +182,13 @@ class MultiScreenNavigator(
         actionSelectTab.invoke(screenKey)
         currentRouter = screenKey
         transaction.commit()
+    }
+
+    private fun removeRouter(tabId: String?, container: Fragment?) {
+        RouteNavigationContainer.removeRouter(tabId)
+        if (container != null) {
+            fragmentManager.beginTransaction().remove(container).commit()
+        }
     }
 
     private fun rootScreenLater(ids: List<String>) {

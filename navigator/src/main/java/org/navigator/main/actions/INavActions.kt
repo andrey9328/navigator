@@ -39,7 +39,7 @@ data class NavCreateSubRouter(
  */
 data class NavRemoveSubRouter(
     val tabId: String,
-    val subRouterIds: List<String>,
+    val subRouterId: String,
 ) : IMultiNavActions
 
 /**
