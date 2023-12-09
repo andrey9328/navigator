@@ -93,6 +93,19 @@ override fun onPause() {
 }
 ```
 
+Add save state logic
+```kotlin
+override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    navigator.saveBundleState(outState)
+}
+
+override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+    super.onRestoreInstanceState(savedInstanceState)
+    navigator.restoreBundleState(savedInstanceState)
+}
+```
+
 You can add back event handling
 ```kotlin
  onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
