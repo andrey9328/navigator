@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.navigator.main.createNavigator
-import org.navigator.main.getRouter
+import org.navigator.main.utils.createNavigator
+import org.navigator.main.utils.getRouter
 import org.navigator.navigator.R
 
 class ScreenContainer: Fragment() {

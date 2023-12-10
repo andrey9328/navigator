@@ -57,14 +57,6 @@ class MultiScreenNavigator(
         return fragmentManager.backStackEntryCount == 0
     }
 
-    override fun getShowFragment(): Fragment? {
-        return fragmentManager.fragments
-            .find { it.isVisible }
-            ?.childFragmentManager
-            ?.fragments
-            ?.find { it.isVisible }
-    }
-
     override fun saveBundleState(bundle: Bundle) {
         bundle.putStringArrayList(BACK_STACK_KEY, backStack)
         bundle.putString(TAB_KEY, currentRouter)
@@ -129,18 +121,15 @@ class MultiScreenNavigator(
             container.arguments = bundleOf(ScreenContainer.ROUTER_TAG to routerId)
             transaction.add(containerId, container, routerId)
             getRouter(routerId).addAction(NavReplaceScreen(screen, args = args))
-            actionSelectTab.invoke(routerId)
-
         } else if (args != null || isClearStack || screensForClear.contains(routerId)) {
             screensForClear.remove(routerId)
             transaction.show(newFragment)
             getRouter(routerId).addAction(NavBackToRootScreen)
             getRouter(routerId).addAction(NavReplaceScreen(screen, args = args))
-            actionSelectTab.invoke(routerId)
         } else {
             transaction.show(newFragment)
-            actionSelectTab.invoke(routerId)
         }
+        actionSelectTab.invoke(routerId)
         currentRouter = routerId
         transaction.commitNow()
     }

@@ -11,7 +11,7 @@ import org.navigator.app.R
 import org.navigator.main.actions.NavBackToRootScreen
 import org.navigator.main.actions.NavCreateSubRouter
 import org.navigator.main.actions.NavOpenScreen
-import org.navigator.main.getRouter
+import org.navigator.main.utils.getRouter
 import org.navigator.main.models.NavigationScreen
 
 class AppsMenuFragment: Fragment() {
@@ -34,6 +34,7 @@ class AppsMenuFragment: Fragment() {
             }
         }
         view.findViewById<Button>(R.id.btnBackParent).setOnClickListener {
+            getRouter(null).sendResult("result", "111")
             getRouter().addAction(NavBackToRootScreen)
         }
 

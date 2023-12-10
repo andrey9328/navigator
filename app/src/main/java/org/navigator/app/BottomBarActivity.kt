@@ -9,10 +9,9 @@ import org.navigator.fragments.HistoryFragment
 import org.navigator.fragments.ProfileFragment
 import org.navigator.main.models.NavigationScreen
 import org.navigator.main.actions.NavBack
-import org.navigator.main.actions.NavRemoveSubRouter
 import org.navigator.main.actions.NavSelectTab
-import org.navigator.main.createMultiStackNavigator
-import org.navigator.main.getRouter
+import org.navigator.main.utils.createMultiStackNavigator
+import org.navigator.main.utils.getRouter
 
 class BottomBarActivity: AppCompatActivity() {
     private val navigator = createMultiStackNavigator(R.id.mainContainer, supportFragmentManager,

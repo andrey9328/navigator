@@ -39,10 +39,6 @@ class Navigator(
         return fragmentManager.backStackEntryCount == 0
     }
 
-    override fun getShowFragment(): Fragment? {
-        return fragmentManager.fragments.find { it.isVisible }
-    }
-
     override fun saveBundleState(bundle: Bundle) {
        
     }

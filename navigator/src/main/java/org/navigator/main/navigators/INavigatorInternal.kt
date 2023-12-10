@@ -8,4 +8,9 @@ interface INavigatorInternal: INavigator {
      * @param routerTag tag of current route
      */
     fun executeAction(action: INavActions, routerTag: String?)
+
+    /**
+     * Return current fragment is last in backstack
+     */
+    fun isRootFragment() : Boolean
 }

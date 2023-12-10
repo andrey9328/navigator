@@ -8,8 +8,8 @@ import org.navigator.fragments.HistoryFragment
 import org.navigator.main.models.NavigationScreen
 import org.navigator.main.actions.NavBack
 import org.navigator.main.actions.NavReplaceScreen
-import org.navigator.main.createNavigator
-import org.navigator.main.getRouter
+import org.navigator.main.utils.createNavigator
+import org.navigator.main.utils.getRouter
 
 class SimpleActivity: AppCompatActivity() {
     private val navigator = createNavigator(R.id.mainContainer, supportFragmentManager)

@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import org.navigator.app.R
-import org.navigator.main.actions.*
-import org.navigator.main.getRouter
 
 class LoginFragment: Fragment() {
 

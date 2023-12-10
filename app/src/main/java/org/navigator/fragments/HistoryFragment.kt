@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import org.navigator.app.R
 import org.navigator.main.actions.NavOpenScreen
 import org.navigator.main.actions.NavSelectTab
-import org.navigator.main.getRouter
+import org.navigator.main.utils.getRouter
 import org.navigator.main.models.NavigationScreen
 
 
@@ -28,6 +28,11 @@ class HistoryFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        getRouter(null).setResultListener("result") { result ->
+            view.findViewById<TextView>(R.id.tvExample).text = result as String
+        }
+
         view.findViewById<TextView>(R.id.tvExample)?.let {
             if (savedInstanceState?.getString("Text") == null) {
                 it.text = "History fragment " + parentFragmentManager.backStackEntryCount.toString()

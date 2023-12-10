@@ -35,7 +35,7 @@ data class NavCreateSubRouter(
  * Open sub screen
  *
  * @param tabId id scope screen to find sub router
- * @param subRouterIds id scope screen
+ * @param subRouterId id scope screen
  */
 data class NavRemoveSubRouter(
     val tabId: String,
