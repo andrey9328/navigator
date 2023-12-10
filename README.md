@@ -137,19 +137,21 @@ Examble with android bottombar
 
 
 # Work with parameters with result listeners. 
-!!! It is important to send and receive data within the same router
+It is important to send and receive data within the same router!!!
 
+Add subscription for listen result
 ```kotlin
-//Add subscription for listen result
 getRouter().setResultListener("result") { data ->
     val str = data as String
     //use data here
- }
- getRouter().addAction(NavSelectTab("tab_id2"))
+}
+getRouter().addAction(NavSelectTab("tab_id2"))
+```
 
-//Send data to result listener
+Send data to result listener
+```kotlin
 getRouter().sendResult("result", "data str")
- getRouter().addAction(NavSelectTab("tab_id1"))
+getRouter().addAction(NavSelectTab("tab_id1"))
 ```
 
 All action find <a href="https://github.com/andrey9328/navigator/blob/master/navigator/src/main/java/org/navigator/main/actions/INavActions.kt"/>this</a><br>
