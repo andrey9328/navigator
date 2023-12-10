@@ -3,7 +3,6 @@ package org.navigator.main.navigators
 import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import org.navigator.NavigationException
 import org.navigator.main.models.NavigationScreen
@@ -31,7 +30,7 @@ class Navigator(
                 val screen = RouteNavigationContainer.getScreen(action.associateId) ?: throw NavigationException("Incorrect associate id")
                 openNewScreen(screen, true, routerTag, true, action.args)
             }
-            is NavBackTo -> { fragmentManager.popBackStack(action.fragmentTag, 0) }
+            is NavBackTo -> { fragmentManager.popBackStack(action.screenKey, 0) }
         }
     }
 
@@ -70,13 +69,13 @@ class Navigator(
         fragment.arguments = newBundle
 
         if (isReplace) {
-            transaction.replace(containerId, fragment, fragment::class.java.simpleName)
+            transaction.replace(containerId, fragment, screen.screenKey ?: fragment::class.java.simpleName)
         } else {
-            transaction.add(containerId, fragment, fragment::class.java.simpleName)
+            transaction.add(containerId, fragment, screen.screenKey ?: fragment::class.java.simpleName)
         }
 
         if (isAddedToBackStack) {
-            transaction.addToBackStack(fragment::class.java.simpleName)
+            transaction.addToBackStack(screen.screenKey ?: fragment::class.java.simpleName)
         }
         transaction.commit()
     }

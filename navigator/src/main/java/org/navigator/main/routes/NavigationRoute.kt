@@ -10,7 +10,7 @@ import org.navigator.main.navigators.MultiScreenNavigator
 import org.navigator.main.utils.result.NavResultHandler
 import org.navigator.main.utils.result.NavResultListener
 
-class NavigationRoute(private val tag: String?): INavigationRoute {
+class NavigationRoute(private val routerTag: String?): INavigationRoute {
     private var currentNavigator: INavigatorInternal? = null
     private val actions = arrayListOf<INavActions>()
     private val navigationResult = NavResultHandler()
@@ -24,7 +24,7 @@ class NavigationRoute(private val tag: String?): INavigationRoute {
     override fun detachNavigator(isRemoveRouter: Boolean) {
         currentNavigator = null
         if (isRemoveRouter) {
-            RouteNavigationContainer.removeRouter(tag)
+            RouteNavigationContainer.removeRouter(routerTag)
         }
     }
 
@@ -59,7 +59,7 @@ class NavigationRoute(private val tag: String?): INavigationRoute {
 
     private fun pendingActions() {
         if (currentNavigator == null) return
-        actions.forEach { currentNavigator?.executeAction(it, tag) }
+        actions.forEach { currentNavigator?.executeAction(it, routerTag) }
         actions.clear()
     }
 }

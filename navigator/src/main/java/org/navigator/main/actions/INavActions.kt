@@ -90,6 +90,6 @@ data class NavBack(val systemAction: (() -> Unit)? = null): INavActions
 /**
  * Back to fragment by name
  *
- * @param fragmentTag name fragment to back (Example: use fragment class Fragment::class.simpleName)
+ * @param screenKey name fragment to back (Example: use fragment class Fragment::class.simpleName) or screenKey parameter
  */
-data class NavBackTo(val fragmentTag: String?): INavActions
+data class NavBackTo(val screenKey: String?): INavActions
