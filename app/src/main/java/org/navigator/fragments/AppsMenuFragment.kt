@@ -12,7 +12,7 @@ import org.navigator.main.actions.NavBackToRootScreen
 import org.navigator.main.actions.NavCreateSubRouter
 import org.navigator.main.actions.NavOpenScreen
 import org.navigator.main.utils.getRouter
-import org.navigator.main.models.NavigationScreen
+import org.navigator.main.models.NavFragment
 
 class AppsMenuFragment: Fragment() {
 
@@ -39,11 +39,11 @@ class AppsMenuFragment: Fragment() {
         }
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
-            getRouter().addAction(NavOpenScreen(NavigationScreen { AppsMenuFragment() }))
+            getRouter().addAction(NavOpenScreen(NavFragment { AppsMenuFragment() }))
         }
 
         view.findViewById<Button>(R.id.openNewScreenTab).setOnClickListener {
-            getRouter(null).addAction(NavCreateSubRouter(R.id.profileMenu.toString(), "profile_new", NavigationScreen { HistoryFragment() }))
+            getRouter(null).addAction(NavCreateSubRouter(R.id.profileMenu.toString(), "profile_new", NavFragment { HistoryFragment() }))
         }
     }
 

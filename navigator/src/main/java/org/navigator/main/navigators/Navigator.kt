@@ -4,9 +4,8 @@ import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import org.navigator.NavigationException
-import org.navigator.main.models.NavigationScreen
-import org.navigator.main.RouteNavigationContainer
+import org.navigator.main.models.NavFragment
+import org.navigator.main.RouteNavigationContainer.getSafeScreen
 import org.navigator.main.fragments.ScreenContainer
 import org.navigator.main.actions.*
 
@@ -18,17 +17,15 @@ class Navigator(
     override fun executeAction(action: INavActions, routerTag: String?) {
         fragmentManager.executePendingTransactions()
         when(action) {
-            is NavOpenScreen -> openNewScreen(action.screen, true, routerTag, false, action.args)
+            is NavOpenScreen -> {
+                val screen = action.screen ?: action.associateScreenId.getSafeScreen()
+                openNewScreen(screen, true, routerTag, false, action.args)
+            }
             is NavBack -> { backAction(action) }
             is NavBackToRootScreen -> { fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE) }
-            is NavReplaceScreen -> { openNewScreen(action.screen, false, routerTag, true, action.args) }
-            is NavReplaceScreenById -> {
-                val screen = RouteNavigationContainer.getScreen(action.associateId) ?: throw NavigationException("Incorrect associate id")
+            is NavReplaceScreen -> {
+                val screen = action.screen ?: action.associateScreenId.getSafeScreen()
                 openNewScreen(screen, false, routerTag, true, action.args)
-            }
-            is NavOpenScreenById -> {
-                val screen = RouteNavigationContainer.getScreen(action.associateId) ?: throw NavigationException("Incorrect associate id")
-                openNewScreen(screen, true, routerTag, true, action.args)
             }
             is NavBackTo -> { fragmentManager.popBackStack(action.screenKey, 0) }
         }
@@ -55,7 +52,7 @@ class Navigator(
     }
 
     private fun openNewScreen(
-        screen: NavigationScreen,
+        screen: NavFragment,
         isAddedToBackStack: Boolean,
         tag: String?,
         isReplace: Boolean,

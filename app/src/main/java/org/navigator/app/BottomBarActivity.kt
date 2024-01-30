@@ -7,7 +7,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.navigator.fragments.AppsMenuFragment
 import org.navigator.fragments.HistoryFragment
 import org.navigator.fragments.ProfileFragment
-import org.navigator.main.models.NavigationScreen
+import org.navigator.main.models.NavFragment
 import org.navigator.main.actions.NavBack
 import org.navigator.main.actions.NavSelectTab
 import org.navigator.main.utils.createMultiStackNavigator
@@ -25,9 +25,9 @@ class BottomBarActivity: AppCompatActivity() {
                           },
         createScreen = {
             when(it) {
-                R.id.appsMenu.toString() -> NavigationScreen { AppsMenuFragment() }
-                R.id.historyMenu .toString() -> NavigationScreen { HistoryFragment() }
-                else -> NavigationScreen { ProfileFragment() }
+                R.id.appsMenu.toString() -> NavFragment { AppsMenuFragment() }
+                R.id.historyMenu .toString() -> NavFragment { HistoryFragment() }
+                else -> NavFragment { ProfileFragment() }
             }
         },
         backStackBuilder = { back, current, new ->

@@ -6,8 +6,9 @@ import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import org.navigator.main.models.NavigationScreen
+import org.navigator.main.models.NavFragment
 import org.navigator.main.RouteNavigationContainer
+import org.navigator.main.RouteNavigationContainer.getSafeScreen
 import org.navigator.main.fragments.ScreenContainer
 import org.navigator.main.actions.*
 import org.navigator.main.container.SubRoutersContainer
@@ -17,7 +18,7 @@ class MultiScreenNavigator(
     @IdRes val containerId: Int,
     private val fragmentManager: FragmentManager,
     private val actionSelectTab: (String) -> Unit,
-    private val createScreen: (String) -> NavigationScreen,
+    private val createScreen: (String) -> NavFragment,
     private val backStackBuilder: (List<String>, String?, String?) -> List<String> = { list, current, _ ->
         val result = ArrayList<String>(list)
         current?.let { result.add(it) }
@@ -42,9 +43,10 @@ class MultiScreenNavigator(
             is NavClearChainTabsLater -> rootScreenLater(action.tabIds)
             is NavCreateSubRouter -> {
                 subRouters.add(SubRoutersContainer(action.tabId, action.subRouterId))
+                val screen = action.screen ?: action.associateScreenId.getSafeScreen()
                 selectTab(
                     action.tabId,
-                    action.screen,
+                    screen,
                     false,
                     action.args
                 )
@@ -64,6 +66,7 @@ class MultiScreenNavigator(
         bundle.putParcelableArrayList(SUB_ROUTERS, subRouters)
     }
 
+    @Suppress("DEPRECATION")
     override fun restoreBundleState(bundle: Bundle) {
         bundle.getStringArrayList(BACK_STACK_KEY)?.let {
             backStack.clear()
@@ -100,7 +103,7 @@ class MultiScreenNavigator(
         }
     }
 
-    private fun selectTab(tabId: String, screen: NavigationScreen, isClearStack: Boolean, args: Bundle?) {
+    private fun selectTab(tabId: String, screen: NavFragment, isClearStack: Boolean, args: Bundle?) {
         val routerId = subRouters.find { it.mainRouter == tabId }?.subRouter ?: tabId
 
         val currentFragment = fragmentManager.fragments.find { it.isVisible }

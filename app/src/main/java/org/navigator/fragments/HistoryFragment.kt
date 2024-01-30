@@ -13,7 +13,7 @@ import org.navigator.app.R
 import org.navigator.main.actions.NavOpenScreen
 import org.navigator.main.actions.NavSelectTab
 import org.navigator.main.utils.getRouter
-import org.navigator.main.models.NavigationScreen
+import org.navigator.main.models.NavFragment
 
 
 class HistoryFragment: Fragment() {
@@ -56,7 +56,7 @@ class HistoryFragment: Fragment() {
         }
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
-            getRouter().addAction(NavOpenScreen(NavigationScreen { HistoryFragment() }))
+            getRouter().addAction(NavOpenScreen(NavFragment { HistoryFragment() }))
         }
     }
 

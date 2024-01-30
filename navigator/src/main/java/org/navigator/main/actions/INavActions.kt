@@ -1,7 +1,7 @@
 package org.navigator.main.actions
 
 import android.os.Bundle
-import org.navigator.main.models.NavigationScreen
+import org.navigator.main.models.NavFragment
 
 interface INavActions
 
@@ -21,13 +21,15 @@ data class NavSelectTab(val tabId: String, val isRecreateAll: Boolean = false, v
  *
  * @param tabId id scope screen
  * @param subRouterId Id of screens scope
- * @param screen start screen for sub router
+ * @param screen screen fragment for open
+ * @param associateScreenId use for multi module arch and search screen in RouteNavigationContainer.associatesMap
  * @param args bundle for this fragment if bundle is not null clear all chain and recreate root fragment
  */
 data class NavCreateSubRouter(
     val tabId: String,
     val subRouterId: String,
-    val screen: NavigationScreen,
+    val screen: NavFragment? = null,
+    val associateScreenId: String? = null,
     val args: Bundle? = null
 ) : IMultiNavActions
 
@@ -49,31 +51,31 @@ data class NavRemoveSubRouter(
  */
 data class NavClearChainTabsLater(val tabIds: List<String>): IMultiNavActions
 
-data class NavOpenScreen(val screen: NavigationScreen, val args: Bundle? = null): INavActions
+/**
+ * Open new screen in chain
+ *
+ * @param screen screen fragment for open
+ * @param associateScreenId use for multi module arch and search screen in RouteNavigationContainer.associatesMap
+ * @param args bundle for new fragment
+ */
+data class NavOpenScreen(
+    val screen: NavFragment? = null,
+    val associateScreenId: String? = null,
+    val args: Bundle? = null
+) : INavActions
 
 /**
  * Replace screen in chain
  *
  * @param screen screen fragment for open
  * @param args bundle for new fragment
+ * @param associateScreenId use for multi module arch and search screen in RouteNavigationContainer.associatesMap
  */
-data class NavReplaceScreen(val screen: NavigationScreen, val args: Bundle? = null): INavActions
-
-/**
- * Open new screen in chain
- *
- * @param associateId find fragment in associates array by key, exception if key not found
- * @param args bundle for new fragment
- */
-data class NavOpenScreenById(val associateId: String, val args: Bundle? = null): INavActions
-
-/**
- * Replace screen in chain
- *
- * @param associateId find fragment in associates array by key, exception if key not found
- * @param args bundle for new fragment
- */
-data class NavReplaceScreenById(val associateId: String, val args: Bundle? = null): INavActions
+data class NavReplaceScreen(
+    val screen: NavFragment? = null,
+    val associateScreenId: String? = null,
+    val args: Bundle? = null
+): INavActions
 
 /**
  * Clear current backstack
