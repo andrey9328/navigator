@@ -13,6 +13,7 @@ import org.navigator.main.fragments.ScreenContainer
 import org.navigator.main.actions.*
 import org.navigator.main.container.SubRoutersContainer
 import org.navigator.main.routes.INavigationRoute
+import org.navigator.main.utils.safeBeginTransaction
 
 class MultiScreenNavigator(
     @IdRes val containerId: Int,
@@ -27,31 +28,14 @@ class MultiScreenNavigator(
 ) : INavigatorMultiInternal {
     private var backStack = arrayListOf<String>()
     private var currentRouter: String? = null
-    private val screensForClear = arrayListOf<String>()
     private val subRouters = arrayListOf<SubRoutersContainer>()
 
-    override fun executeAction(action: INavActions, routerTag: String?) {
-        fragmentManager.executePendingTransactions()
-        when (action) {
-            is NavSelectTab -> selectTab(
-                action.tabId,
-                createScreen.invoke(action.tabId),
-                action.isRecreateAll,
-                action.args
-            )
-            is NavBack -> backProcess(action)
-            is NavClearChainTabsLater -> rootScreenLater(action.tabIds)
-            is NavCreateSubRouter -> {
-                subRouters.add(SubRoutersContainer(action.tabId, action.subRouterId))
-                val screen = action.screen ?: action.associateScreenId.getSafeScreen()
-                selectTab(
-                    action.tabId,
-                    screen,
-                    false,
-                    action.args
-                )
+    override fun executeActionPull(actionPull: ActionPull, routerTag: String?) {
+        for (item in actionPull.actions) {
+            when(item) {
+                is IMultiNavActions -> executeAction(item)
+                else -> getCurrentRouter(currentRouter).addAction(item)
             }
-            is NavRemoveSubRouter -> { removeSubRouterAction(action.tabId, action.subRouterId) }
         }
     }
 
@@ -62,7 +46,6 @@ class MultiScreenNavigator(
     override fun saveBundleState(bundle: Bundle) {
         bundle.putStringArrayList(BACK_STACK_KEY, backStack)
         bundle.putString(TAB_KEY, currentRouter)
-        bundle.putStringArrayList(CLEAR_CHAINS, screensForClear)
         bundle.putParcelableArrayList(SUB_ROUTERS, subRouters)
     }
 
@@ -71,11 +54,6 @@ class MultiScreenNavigator(
         bundle.getStringArrayList(BACK_STACK_KEY)?.let {
             backStack.clear()
             backStack.addAll(it)
-        }
-
-        bundle.getStringArrayList(CLEAR_CHAINS)?.let {
-            screensForClear.clear()
-            screensForClear.addAll(it)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -92,15 +70,41 @@ class MultiScreenNavigator(
         }
     }
 
-    private fun removeSubRouterAction(tabId: String, subRouterId: String) {
-        for (i in 0..< subRouters.size) {
-            val currentRouter = subRouters[i]
-            if (currentRouter.mainRouter == tabId && currentRouter.subRouter == subRouterId) {
-                subRouters.removeAt(i)
-                removeRouter(currentRouter.subRouter, fragmentManager.findFragmentByTag(currentRouter.subRouter))
-                return
+    private fun executeAction(action: INavActions) {
+        when (action) {
+            is NavSelectTab -> selectTab(
+                action.tabId,
+                createScreen.invoke(action.tabId),
+                action.isRecreateAll,
+                action.args
+            )
+            is NavBack -> backProcess(action)
+            is TabBack -> backWithSubRouter(action)
+            is NavCreateSubRouter -> {
+                subRouters.add(SubRoutersContainer(action.tabId, action.subRouterId))
+                val screen = action.screen ?: action.associateScreenId.getSafeScreen()
+                selectTab(
+                    action.tabId,
+                    screen,
+                    false,
+                    action.args
+                )
             }
+            is NavCloseSubRouter -> { removeSubRouterAction() }
         }
+        fragmentManager.executePendingTransactions()
+    }
+
+    private fun removeSubRouterAction() {
+        if (subRouters.isEmpty()) {
+            return
+        }
+
+        val removeIndex = subRouters.indexOfLast { it.subRouter == currentRouter }.takeIf { it >= 0 } ?: return
+        val removeItem = subRouters.removeAt(removeIndex)
+        removeRouter(removeItem.subRouter, fragmentManager.findFragmentByTag(removeItem.subRouter))
+        executeAction(NavSelectTab(removeItem.mainRouter, false))
+        backStack.removeLastItem { it == removeItem.subRouter }
     }
 
     private fun selectTab(tabId: String, screen: NavFragment, isClearStack: Boolean, args: Bundle?) {
@@ -113,44 +117,58 @@ class MultiScreenNavigator(
         }
 
         backStack = ArrayList(backStackBuilder.invoke(backStack, currentRouter, routerId))
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = fragmentManager
+            .beginTransaction()
+            .setReorderingAllowed(true)
+
         if (currentFragment != null) {
             transaction.hide(currentFragment)
         }
 
         if (newFragment == null) {
-            screensForClear.remove(routerId)
             val container = ScreenContainer()
             container.arguments = bundleOf(ScreenContainer.ROUTER_TAG to routerId)
             transaction.add(containerId, container, routerId)
-            getRouter(routerId).addAction(NavReplaceScreen(screen, args = args))
-        } else if (args != null || isClearStack || screensForClear.contains(routerId)) {
-            screensForClear.remove(routerId)
+            getCurrentRouter(routerId).addAction(NavReplaceScreen(screen, args = args))
+        } else if (args != null || isClearStack) {
             transaction.show(newFragment)
-            getRouter(routerId).addAction(NavBackToRootScreen)
-            getRouter(routerId).addAction(NavReplaceScreen(screen, args = args))
+            getCurrentRouter(routerId).addAction(NavBackToRootScreen)
+            getCurrentRouter(routerId).addAction(NavReplaceScreen(screen, args = args))
         } else {
             transaction.show(newFragment)
         }
-        actionSelectTab.invoke(routerId)
+
+        if (currentRouter != routerId) {
+            actionSelectTab.invoke(routerId)
+        }
+
         currentRouter = routerId
-        transaction.commitNow()
+        transaction.commit()
     }
 
-    private fun getRouter(tag: String?): INavigationRoute {
+    private fun getCurrentRouter(tag: String?): INavigationRoute {
         return RouteNavigationContainer.getRouteByTag(tag)
     }
 
     private fun backProcess(action: NavBack) {
-        val route = getRouter(currentRouter)
+        val route = getCurrentRouter(currentRouter)
 
         if (route.getCurrentNavigator()?.isRootFragment() == true) {
-            val isRemoveRouter = subRouters.removeLastItem { it.subRouter == currentRouter }
-            backStack.removeLastOrNull()?.let { backTab(it, isRemoveRouter) } ?: action.systemAction?.invoke()
+            backWithSubRouter(action)
             return
         }
 
         route.addAction(action)
+    }
+
+    private fun backWithSubRouter(action: INavActions) {
+        val systemAction = when(action) {
+            is NavBack -> action.systemAction
+            is TabBack -> action.systemAction
+            else -> return
+        }
+        val isRemoveRouter = subRouters.removeLastItem { it.subRouter == currentRouter }
+        backStack.removeLastOrNull()?.let { backTab(it, isRemoveRouter) } ?: systemAction?.invoke()
     }
 
     private fun backTab(screenKey: String, isRemoveRouter: Boolean) {
@@ -162,16 +180,20 @@ class MultiScreenNavigator(
 
         val newFragment = fragmentManager.findFragmentByTag(screenKey)
         if (newFragment == null) {
-            selectTab(screenKey, createScreen.invoke(screenKey), false, null)
+            executeAction(NavSelectTab(screenKey))
             return
         }
-        val transaction = fragmentManager.beginTransaction()
+        val transaction = fragmentManager.safeBeginTransaction()
+
         if (currentFragment != null) {
             transaction.hide(currentFragment)
         }
 
         transaction.show(newFragment)
-        actionSelectTab.invoke(screenKey)
+        if (currentRouter != screenKey) {
+            actionSelectTab.invoke(screenKey)
+        }
+
         currentRouter = screenKey
         transaction.commit()
     }
@@ -179,20 +201,12 @@ class MultiScreenNavigator(
     private fun removeRouter(tabId: String?, container: Fragment?) {
         RouteNavigationContainer.removeRouter(tabId)
         if (container != null) {
-            fragmentManager.beginTransaction().remove(container).commit()
+            fragmentManager
+                .safeBeginTransaction()
+                .remove(container)
+                .commit()
+            fragmentManager.executePendingTransactions()
         }
-    }
-
-    private fun rootScreenLater(ids: List<String>) {
-        val newIds = ids.toMutableList()
-        val currentId = currentRouter
-        if (currentId != null && ids.contains(currentId)) {
-            getRouter(currentId).addAction(NavBackToRootScreen)
-            getRouter(currentId).addAction(NavReplaceScreen(createScreen.invoke(currentId)))
-            newIds.remove(currentId)
-        }
-        screensForClear.clear()
-        screensForClear.addAll(newIds)
     }
 
     private fun <T> ArrayList<T>.removeLastItem(predicate: (T) -> Boolean): Boolean {
@@ -204,7 +218,6 @@ class MultiScreenNavigator(
     companion object {
         private const val BACK_STACK_KEY = "BACK_STACK_KEY"
         private const val TAB_KEY = "TAB_KEY"
-        private const val CLEAR_CHAINS = "CLEAR_CHAINS"
         private const val SUB_ROUTERS = "SUB_ROUTERS"
     }
 }

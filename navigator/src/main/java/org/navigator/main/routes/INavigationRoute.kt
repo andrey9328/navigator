@@ -23,7 +23,7 @@ interface INavigationRoute {
      * Add navigator to route recommended call in onResume()
      * @param action add action to stack
      */
-    fun addAction(action: INavActions)
+    fun addAction(vararg action: INavActions)
 
     /**
      * Return current attach navigator

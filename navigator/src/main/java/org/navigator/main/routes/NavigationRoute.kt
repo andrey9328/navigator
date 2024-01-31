@@ -2,21 +2,20 @@ package org.navigator.main.routes
 
 import org.navigator.NavigationException
 import org.navigator.main.RouteNavigationContainer
-import org.navigator.main.actions.IMultiNavActions
+import org.navigator.main.actions.ActionPull
 import org.navigator.main.actions.INavActions
 import org.navigator.main.navigators.INavigator
 import org.navigator.main.navigators.INavigatorInternal
-import org.navigator.main.navigators.MultiScreenNavigator
 import org.navigator.main.utils.result.NavResultHandler
 import org.navigator.main.utils.result.NavResultListener
 
 class NavigationRoute(private val routerTag: String?): INavigationRoute {
     private var currentNavigator: INavigatorInternal? = null
-    private val actions = arrayListOf<INavActions>()
+    private val actions = arrayListOf<ActionPull>()
     private val navigationResult = NavResultHandler()
 
     override fun attachNavigator(navigator: INavigator) {
-        val castNavigator = navigator as? INavigatorInternal ?: throw NavigationException("Base class for navigator must be INavigatorForRoute")
+        val castNavigator = navigator as? INavigatorInternal ?: throw NavigationException("Base class for navigator must be INavigatorInternal")
         currentNavigator = castNavigator
         pendingActions()
     }
@@ -28,16 +27,8 @@ class NavigationRoute(private val routerTag: String?): INavigationRoute {
         }
     }
 
-    override fun addAction(action: INavActions) {
-        if (currentNavigator != null
-            && currentNavigator !is MultiScreenNavigator && action is IMultiNavActions
-        ) {
-            throw NavigationException(
-                "Use multi navigation action for default navigator. " +
-                        "More likely incorrect navigator tag for getRouter method"
-            )
-        }
-        actions.add(action)
+    override fun addAction(vararg action: INavActions) {
+        actions.add(ActionPull(action.toList()))
         pendingActions()
     }
 
@@ -59,7 +50,7 @@ class NavigationRoute(private val routerTag: String?): INavigationRoute {
 
     private fun pendingActions() {
         if (currentNavigator == null) return
-        actions.forEach { currentNavigator?.executeAction(it, routerTag) }
+        actions.forEach { currentNavigator?.executeActionPull(it, routerTag) }
         actions.clear()
     }
 }

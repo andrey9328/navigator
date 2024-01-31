@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import org.navigator.app.R
 import org.navigator.main.actions.NavOpenScreen
-import org.navigator.main.actions.NavSelectTab
+import org.navigator.main.actions.NavCloseSubRouter
+import org.navigator.main.actions.TabBack
 import org.navigator.main.utils.getRouter
 import org.navigator.main.models.NavFragment
 
@@ -42,17 +41,7 @@ class HistoryFragment: Fragment() {
 
         }
         view.findViewById<Button>(R.id.btnOpenProfile).setOnClickListener {
-            val inputText = view.findViewById<EditText>(R.id.etArguments).text
-            if (inputText.isNullOrEmpty()) {
-                getRouter(null).addAction(NavSelectTab(R.id.profileMenu.toString()))
-            } else {
-                getRouter(null).addAction(
-                    NavSelectTab(
-                        R.id.profileMenu.toString(), args =
-                        bundleOf("Arg" to inputText.toString())
-                    )
-                )
-            }
+            getRouter().addAction(NavCloseSubRouter, TabBack())
         }
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
