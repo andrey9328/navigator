@@ -34,22 +34,23 @@ data class NavCreateSubRouter(
 ) : IMultiNavActions
 
 /**
- * Open sub screen
- *
- * @param tabId id scope screen to find sub router
- * @param subRouterId id scope screen
+ * Close all screen in sub screen
  */
-data class NavRemoveSubRouter(
-    val tabId: String,
-    val subRouterId: String,
-) : IMultiNavActions
+object NavCloseSubRouter: IMultiNavActions
 
 /**
- * Recreates fragments after a tab is selected if you need to recreate not immediately, but after opening the tab
+ * Back to previous fragment
  *
- * @param tabIds id scope screen need restart later
+ * @param systemAction add action from system (Example: Activity.finish())
  */
-data class NavClearChainTabsLater(val tabIds: List<String>): IMultiNavActions
+data class NavBack(val systemAction: (() -> Unit)? = null): IMultiNavActions
+
+/**
+ * Back to previous tab
+ *
+ * @param systemAction add action from system (Example: Activity.finish())
+ */
+data class TabBack(val systemAction: (() -> Unit)? = null): IMultiNavActions
 
 /**
  * Open new screen in chain
@@ -81,13 +82,6 @@ data class NavReplaceScreen(
  * Clear current backstack
  */
 object NavBackToRootScreen: INavActions
-
-/**
- * Back to previous fragment
- *
- * @param systemAction add action from system (Example: Activity.finish())
- */
-data class NavBack(val systemAction: (() -> Unit)? = null): INavActions
 
 /**
  * Back to fragment by name

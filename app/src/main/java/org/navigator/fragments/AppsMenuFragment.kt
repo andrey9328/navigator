@@ -11,6 +11,7 @@ import org.navigator.app.R
 import org.navigator.main.actions.NavBackToRootScreen
 import org.navigator.main.actions.NavCreateSubRouter
 import org.navigator.main.actions.NavOpenScreen
+import org.navigator.main.actions.NavSelectTab
 import org.navigator.main.utils.getRouter
 import org.navigator.main.models.NavFragment
 
@@ -34,8 +35,7 @@ class AppsMenuFragment: Fragment() {
             }
         }
         view.findViewById<Button>(R.id.btnBackParent).setOnClickListener {
-            getRouter(null).sendResult("result", "111")
-            getRouter().addAction(NavBackToRootScreen)
+
         }
 
         view.findViewById<Button>(R.id.btnOpen).setOnClickListener {
@@ -43,7 +43,15 @@ class AppsMenuFragment: Fragment() {
         }
 
         view.findViewById<Button>(R.id.openNewScreenTab).setOnClickListener {
-            getRouter(null).addAction(NavCreateSubRouter(R.id.profileMenu.toString(), "profile_new", NavFragment { HistoryFragment() }))
+            //getRouter(null).addAction(NavCreateSubRouter(R.id.profileMenu.toString(), "profile_new", NavFragment { HistoryFragment() }))
+//            getRouter().addAction(
+//                NavSelectTab(tabId = R.id.profileMenu.toString()),
+//                NavOpenScreen(screen = NavFragment { HistoryFragment() })
+//            )
+
+            getRouter().addAction(
+                NavCreateSubRouter(tabId = R.id.profileMenu.toString(), "sub", NavFragment { HistoryFragment() })
+            )
         }
     }
 
